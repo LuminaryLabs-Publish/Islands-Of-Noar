@@ -1,5 +1,5 @@
-# Asset source
+# Floating island asset sources
 
-All island meshes, sphere, markers, beacons and materials are editable NexusEngine documents embedded in `project/drift-isles.nexus.json`. They were created through Studio's primitive, transform, material and behavior controls. There are no remotely hosted model, texture, audio or font dependencies. Sea and pickup/jump/checkpoint effects are runtime presentation; optional chimes use Web Audio synthesis.
+`floating-islands/` contains 20 original binary GLBs copied from Luminary Assets / Floating Islands Vol. 1 / Staging / Attempt-003, five each in Meadow, Forest, Desert and Tundra. Filenames remain unchanged and source files are retained in the Luminary shared drive. The game-owned `kits/island-scene-kit.mjs` identifies each model by stable path.
 
-Keep stable asset IDs when editing or reusing a mesh. Use **Make unique** before changing only one instance. Put future imported original files here and import them into Studio. Save the project after imports; files in this folder alone are not automatically runtime assets.
+The previous editable NexusEngine Studio scene is retained as `project/drift-isles.nexus.json`. Importing external GLBs into that project, with source-preserving receipts, is not claimed by this preview and remains an engine-specific validation task.

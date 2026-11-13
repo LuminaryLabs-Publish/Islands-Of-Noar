@@ -1,25 +1,13 @@
 {
-  "schema": "drift-isles.release/2",
-  "version": "0.2.1",
-  "sourceRepository": "LuminaryLabs-Publish/Drift-Isles",
-  "sourceCommit": "3e6a22562cf525748b0a617a399017847fe44dd6",
-  "publicURL": "https://luminarylabs-publish.github.io/Drift-Isles/",
-  "mirrors": [
-    "https://luminarylabs.dev/games/drift-isles/",
-    "https://luminarylabs.dev/drift-isles/"
-  ],
-  "engineCommit": "e3b9b589c9eaad144ef815ec9fa5ab20f0806424",
-  "projectCompatibilityCommit": "081fea1cdd9ca1662bc15116e7174d9c27821630",
-  "runtimeKit": "configured-scene-runtime-kit",
-  "runtimeEntry": "nexusengine/kits/simulation/configured-scene-runtime/browser",
-  "studioRequiredToBuild": false,
-  "studioRequiredToRun": false,
-  "projectSha256": "00bbb9a8a188c9978c7e3ba3beff6240572f0f0912d7075cdbfb4f8aa5e98108",
-  "runtimeSha256": "d47fa9ae7a85c1e3250d52473815330a68292c1ad6aa2801965ab7cbb1a51d9c",
-  "objects": 50,
-  "files": {
-    "index.html": "b79a2c25dbd4af252fe2e021f0faac2efa280d92f1b0759ba09cc1d8d35f8113",
-    "nexusengine-LICENSE.txt": "4a0ae6ed06f277f289a4b0c20b6949640aa02bc491f0cb46b2be24d843256ca7",
-    "three-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
-  }
+  "schema":"noar.preview/1",
+  "name":"Islands of Noar — The Ascension",
+  "version":"0.3.0-preview.1",
+  "status":"development-preview",
+  "entry":"index.html",
+  "scenes":20,
+  "towerPrefabTypes":10,
+  "modelDirectory":"assets/floating-islands/",
+  "studioParity":"pending",
+  "gpuVisualValidation":"pending",
+  "legacyNexusBuild":"builds/web/index.html"
 }

@@ -1,39 +1,49 @@
-# Drift Isles
+# Islands of Noar — The Ascension
 
-A standalone rolling platformer authored with NexusEngine Studio. Roll across five islands, jump between stones, ride a shuttle and an elevator, collect twenty gold energy shards, then reach the cyan finish marker. Checkpoints preserve your progress after a fall.
+Twenty floating islands, ten monumental tower variants, and one continuous journey through four sky biomes. Land on an island, follow its jumpable tower path to the summit, and use the skyway portal to continue to the next island. Flight is also available with `F`.
 
-## Play
+**Status:** HTML5 development preview (`0.3.0-preview.1`). This replaces the website root entry with the new preview. It does not claim final game art or independent GPU-rendering approval. The previous NexusEngine Studio scene and its standalone build are preserved for recovery.
 
-Play at **https://luminarylabs-publish.github.io/Drift-Isles/**. Website mirrors: **https://luminarylabs.dev/games/drift-isles/** and the existing **https://luminarylabs.dev/drift-isles/**. You can also open `builds/web/index.html` in a WebGL-capable desktop browser. The game is bundled and works offline. Alternatively serve `builds/web/` with any static server. No account or private repository access is needed to play this checked-in build.
+## Run
 
-**WASD / arrows:** move · **Space:** jump · **R:** restart · **Escape:** pause. On-screen movement and jump controls appear for coarse pointers. Sound starts off; enable it with the Sound button. Effects respect reduced motion and can be changed during play.
+Serve the repository root using a local static server (`npm run serve` or `python3 -m http.server 8080`). Open `http://localhost:8080/` in a WebGL2-capable browser. The HTML page loads `game/main.mjs`, which consumes the game-owned kits and loads one real GLB per island from `assets/floating-islands/`. No CDN, login, or install is required to play. It is not a server game.
 
-## Edit in NexusEngine Studio
+**Controls:** WASD / arrows move; Space jumps; drag rotates camera; wheel zooms; F toggles free flight; Space rises and C descends in flight; E opens the skyway portal at a summit; R returns to a checkpoint; N begins again. Touch movement and controls are available.
 
-Use **[Studio 0.7.0 or compatible later](https://luminarylabs.dev/nexus-engine-studio/)**, choose **Open**, and select `project/drift-isles.nexus.json`. Scene objects, meshes, materials and behavior settings remain editable. New Studio projects still start empty. The original Studio 0.6 project is retained in `project/archive/`; the current project uses the upgraded Engine registry and should be opened in Studio 0.7 or compatible later.
+## New game systems
 
-The project uses `nexusengine.studio-project/2` and source-format compatibility marker `081fea1cdd9ca1662bc15116e7174d9c27821630`; the executing Engine revision is `e3b9b589c9eaad144ef815ec9fa5ab20f0806424`. Browser and native Studio use the same file. Play is isolated from the authoring documents; Save stores edits, and Export creates a new standalone game.
+| Source | Responsibility |
+| --- | --- |
+| `kits/tower-object-kit.mjs` | Renderer-neutral structural Tower object: architectural parts, guaranteed ascending ledges, checkpoint marks, summit, portal, geometry bounds and reachability rules |
+| `kits/tower-prefab-kit.mjs` | Ten distinct data-driven tower presets, palettes, crowns and styles |
+| `kits/island-scene-kit.mjs` | One ordered scene per real floating island GLB, with biome, tower and destination |
+| `kits/island-progression-kit.mjs` | Authoritative landing, tower wall, summit detection, scene order, and save recovery rules |
+| `game/webgl.mjs` | Browser WebGL2 presentation provider; reads actual glTF 2.0 binary geometry and material colors |
+| `game/main.mjs` | Player controls, camera, fixed-step motion, UI, portal travel and persistence |
 
-Moving platforms use a travel offset, one-way time and endpoint pause in their behavior card. They must be root scene objects with solid colliders. Cyan editor paths show their travel. Checkpoints and finish markers are explicit saved behaviors. Jump speed and rolling settings are in Game Settings.
+The 20 original GLBs were copied from the Luminary Assets **Floating Islands Vol. 1 / Staging / Attempt-003** set. Their original names and files are preserved. A simplified collision surface is currently used for each island's buildable top; physical mesh collision is not claimed.
 
-## Rebuild
+## Packaging and validation
 
-Node 22+, Git and access to the pinned NexusEngine dependency are required. Run `npm ci` then `npm run build`. Studio is not needed to build or play this game.
+```bash
+npm test
+npm run build
+```
 
-The build loads the portable project through Engine's `SceneProject` API, validates it, bundles the Engine-owned configured scene browser host, and generates standalone HTML through Engine's export API. It records the exact Engine revision, source/runtime/output hashes and the module graph. Build guards reject Studio/editor implementations and Build/Agent execution tooling. Registry manifests are portable discovery data and remain available.
+`npm test` verifies prefab route invariants, all scene references, collider rules, progression and the existing 20 GLB headers. `npm run build` writes a standalone static package to `builds/noar/` with a SHA-256 file manifest. The build does not publish and does not edit GitHub Actions.
 
-NexusEngine's optional `configured-scene-runtime-kit` owns platform movement/carry, jump buffering, checkpoint recovery, scoring, finish conditions, pause/reset/snapshots and browser host adapters. Existing Core Domains retain locomotion, contact, player authority, composition and authoring. Three.js supplies rendering through the Engine Kit's optional browser adapter. The game repo owns the islands, objects, materials and settings. No server-side Studio or Engine service is required to play.
+The browser's content/CPU gameplay path was tested using installed Chromium with an instrumented WebGL interface, including real GLB parsing, scene 1 → 2 transition, and final-scene completion. Actual GPU rendering could **not** be certified in the current sandbox because Chromium denied WebGL contexts. A real WebGL2 browser capture and independent visual approval remain outstanding.
 
-## Repository
+## Studio/legacy boundary
 
-- `project/`: editable game source and embedded assets.
-- `assets/`: original asset guidance and future imported originals.
-- `scripts/`: standalone build adapter for pinned NexusEngine APIs.
-- `builds/web/`: independent playable browser release and provenance.
-- `validation/`: observed checks, screenshots and limitations.
+The existing `project/drift-isles.nexus.json` remains the original NexusEngine Studio 0.7-era authored scene. `builds/web/index.html` remains the earlier NexusEngine rolling-platformer export. Those files have not been silently rewritten into the new scene format. **The new tower/island object kits are game-owned and are not yet registered as native NexusEngine Studio kits.** Studio import/export parity is a separate integration gate requiring the installed engine's supported authoring operations. The `legacy:build` script retains the previous pinned Engine build adapter; do not run it expecting the new Noar experience.
 
-The build writes the reviewed static allowlist to `builds/web/` and the repository root, including `.nojekyll` for direct static Pages delivery. Public game Pages serves `main` from `/`. The same files are copied to `Website/main/games/drift-isles/` and the existing `Website/main/drift-isles/`. Website Pages serves `main` from the repository root using its existing legacy deployment; there is no separate build branch or custom Actions workflow. Native **Studio** can edit and test this project; a native **game executable** is a separate delivery target.
+## Milestones before public product release
 
-## Performance audit status
+1. Validate real GPU rendering and visual quality in a WebGL2 browser.
+2. Validate every model's ground height and surface collider in gameplay.
+3. Add native NexusEngine Studio authoring/import parity and save/edit/export verification.
+4. Perform sustained playthrough and hardware performance checks across all 20 scenes.
+5. Obtain owner approval for release, licenses, visual art, and product claims.
 
-Version 0.2.1 changes static publication and provenance only. The Engine pin and gameplay runtime are unchanged. The audit has identified growing per-frame receipt state, slow-frame time loss and failed-tick recovery defects; rebuilding does not claim to fix them. Reusable repairs belong in NexusEngine.
+See [`docs/TOWER-SYSTEM.md`](docs/TOWER-SYSTEM.md) for object and scene contracts.
